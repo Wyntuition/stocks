@@ -1,0 +1,183 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(cuid())
+  email        String        @unique
+  name         String?
+  passwordHash String
+  isActive     Boolean       @default(true)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  portfolios   Portfolio[]
+  userSettings UserSetting[]
+  lists        List[]
+  aiAnalyses   AIAnalysisResult[]
+  transactions Transaction[]
+  cashFlows    CashFlow[]
+}
+
+model List {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  isDefault   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  portfolios  Portfolio[]
+  aiAnalyses  AIAnalysisResult[]
+  transactions Transaction[]
+  cashFlows   CashFlow[]
+
+  @@index([userId])
+  @@unique([userId, name])
+}
+
+model Portfolio {
+  id            String   @id @default(cuid())
+  userId        String
+  listId        String?
+  symbol        String
+  quantity      Int
+  purchasePrice Float
+  purchaseDate  DateTime
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  list          List?      @relation(fields: [listId], references: [id], onDelete: SetNull)
+  transactions  Transaction[]
+
+  @@index([userId])
+  @@index([userId, symbol])
+  @@index([listId])
+  @@unique([id, userId])
+}
+
+model Transaction {
+  id            String   @id @default(cuid())
+  userId        String
+  listId        String?
+  portfolioId   String?
+  symbol        String
+  type          String   // 'buy' or 'sell'
+  quantity      Int
+  price         Float
+  date          DateTime
+  fees          Float?   @default(0)
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  list          List?      @relation(fields: [listId], references: [id], onDelete: SetNull)
+  portfolio     Portfolio? @relation(fields: [portfolioId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([userId, symbol])
+  @@index([listId])
+  @@index([portfolioId])
+}
+
+model CashFlow {
+  id          String   @id @default(cuid())
+  userId      String
+  listId      String?
+  type        String   // 'deposit' or 'withdrawal'
+  amount      Float
+  date        DateTime
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  list        List?    @relation(fields: [listId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([listId])
+}
+
+model StockCache {
+  symbol              String   @id
+  currentPrice        Float?
+  previousClose       Float?
+  dayChange           Float?
+  dayChangePercent    Float?
+  volume              BigInt?
+  avgVolume           BigInt?
+  marketCap           BigInt?
+  peRatio            Float?
+  dividendYield      Float?
+  earningsGrowth     Float?
+  week52High         Float?
+  week52Low          Float?
+  sector             String?
+  industry           String?
+  sectorPeAverage    Float?
+  roic               Float?
+  salesGrowthRate    Float?
+  epsGrowthRate      Float?
+  bvpsGrowthRate     Float?
+  fcfGrowthRate      Float?
+  
+  // Additional financial metrics
+  totalRevenue       Float?
+  totalDebt          Float?
+  totalCash          Float?
+  freeCashflow       Float?
+  ebitda             Float?
+  returnOnAssets     Float?
+  returnOnEquity     Float?
+  profitMargins      Float?
+  operatingMargins   Float?
+  grossMargins       Float?
+  currentRatio       Float?
+  quickRatio         Float?
+  debtToEquity       Float?
+  priceToBook        Float?
+  pegRatio           Float?
+  bookValue          Float?
+  trailingEps        Float?
+  forwardEps         Float?
+  payoutRatio        Float?
+  
+  lastUpdated        DateTime @default(now())
+}
+
+model UserSetting {
+  id        String   @id @default(cuid())
+  userId    String
+  key       String
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, key])
+}
+
+model AIAnalysisResult {
+  id         String   @id @default(cuid())
+  userId     String
+  listId     String?
+  createdAt  DateTime @default(now())
+  input      Json     // Portfolio snapshot or relevant input
+  result     Json     // AI analysis result
+
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  list       List?    @relation(fields: [listId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([listId])
+}

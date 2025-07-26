@@ -1,0 +1,7 @@
+# Ignore all node_modules directories
+**/node_modules
+**/playwright-report/data/*
+*.js.map
+**/dist
+
+.env

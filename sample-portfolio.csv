@@ -1,0 +1,5 @@
+symbol,quantity,purchasePrice,purchaseDate
+AAPL,100,150.00,2023-01-15
+GOOGL,50,2500.00,2023-02-20
+MSFT,75,300.00,2023-03-10
+TSLA,25,800.00,2023-04-05

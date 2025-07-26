@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Dark mode overrides */
+.dark {
+  color-scheme: dark;
+}
+
+/* Background overrides */
+.dark .bg-white {
+  background-color: rgb(31, 41, 55) !important; /* gray-800 */
+}
+
+.dark .bg-gray-50 {
+  background-color: rgb(17, 24, 39) !important; /* gray-900 */
+}
+
+.dark .bg-gray-100 {
+  background-color: rgb(55, 65, 81) !important; /* gray-700 */
+}
+
+.dark .bg-gray-200 {
+  background-color: rgb(75, 85, 99) !important; /* gray-600 */
+}
+
+.dark .bg-gray-300 {
+  background-color: rgb(107, 114, 128) !important; /* gray-500 */
+}
+
+/* Text color overrides */
+.dark .text-gray-900 {
+  color: rgb(243, 244, 246) !important; /* gray-100 */
+}
+
+.dark .text-gray-800 {
+  color: rgb(229, 231, 235) !important; /* gray-200 */
+}
+
+.dark .text-gray-700 {
+  color: rgb(209, 213, 219) !important; /* gray-300 */
+}
+
+.dark .text-gray-600 {
+  color: rgb(156, 163, 175) !important; /* gray-400 */
+}
+
+.dark .text-gray-500 {
+  color: rgb(156, 163, 175) !important; /* gray-400 */
+}
+
+/* Border color overrides */
+.dark .border-gray-200 {
+  border-color: rgb(75, 85, 99) !important; /* gray-600 */
+}
+
+.dark .border-gray-300 {
+  border-color: rgb(107, 114, 128) !important; /* gray-500 */
+}
+
+/* Hover state overrides */
+.dark .hover\:bg-gray-400:hover {
+  background-color: rgb(75, 85, 99) !important; /* gray-600 */
+}
+
+.dark .hover\:bg-blue-200:hover {
+  background-color: rgb(30, 64, 175) !important; /* blue-800 */
+}
+
+.dark .hover\:bg-gray-200:hover {
+  background-color: rgb(75, 85, 99) !important; /* gray-600 */
+}
+
+.dark .hover\:bg-gray-50:hover {
+  background-color: rgb(55, 65, 81) !important; /* gray-700 */
+}
+
+.dark .hover\:bg-gray-100:hover {
+  background-color: rgb(75, 85, 99) !important; /* gray-600 */
+}
+
+/* Input field overrides */
+.dark input[type="text"],
+.dark input[type="number"],
+.dark input[type="date"],
+.dark select,
+.dark textarea {
+  background-color: rgb(55, 65, 81) !important; /* gray-700 */
+  border-color: rgb(107, 114, 128) !important; /* gray-500 */
+  color: rgb(243, 244, 246) !important; /* gray-100 */
+}
+
+.dark input[type="text"]:focus,
+.dark input[type="number"]:focus,
+.dark input[type="date"]:focus,
+.dark select:focus,
+.dark textarea:focus {
+  border-color: rgb(59, 130, 246) !important; /* blue-500 */
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Table specific overrides */
+.dark .divide-gray-200 > * {
+  border-color: rgb(75, 85, 99) !important; /* gray-600 */
+}
